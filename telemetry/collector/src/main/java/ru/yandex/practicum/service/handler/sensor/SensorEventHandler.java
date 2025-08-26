@@ -6,5 +6,5 @@ import ru.yandex.practicum.model.sensor.enums.SensorEventType;
 public interface SensorEventHandler {
     SensorEventType getMessageType();
 
-    void handle(SensorEvent sensorEvent);
+    void process(SensorEvent sensorEvent);
 }

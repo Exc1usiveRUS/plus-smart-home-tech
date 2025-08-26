@@ -20,7 +20,7 @@ public abstract class BaseHubEventHandler<T extends SpecificRecordBase> implemen
     protected abstract T mapToAvro(HubEvent hubEvent);
 
     @Override
-    public void handle(HubEvent hubEvent) {
+    public void process(HubEvent hubEvent) {
         if(!hubEvent.getType().equals(getMessageType())) {
             throw new IllegalArgumentException("Неизвестный тип события хаба: " + hubEvent.getType());
         }

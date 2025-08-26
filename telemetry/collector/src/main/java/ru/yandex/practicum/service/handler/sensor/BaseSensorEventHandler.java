@@ -20,7 +20,7 @@ public abstract class BaseSensorEventHandler<T extends SpecificRecordBase> imple
     protected abstract T mapToAvro(SensorEvent sensorEvent);
 
     @Override
-    public void handle(SensorEvent sensorEvent) {
+    public void process(SensorEvent sensorEvent) {
         if(!sensorEvent.getType().equals(getMessageType())) {
             throw new IllegalArgumentException("Неизвестный тип события сенсора: " + sensorEvent.getType());
         }

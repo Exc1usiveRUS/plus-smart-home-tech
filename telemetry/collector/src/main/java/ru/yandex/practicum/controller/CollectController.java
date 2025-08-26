@@ -38,7 +38,7 @@ public class CollectController {
     public void collectSensorEvent(@Valid @RequestBody SensorEvent request) {
         log.info("Получен запрос на обработку события датчика {}", request);
         if (sensorEventHandlers.containsKey(request.getType())) {
-            sensorEventHandlers.get(request.getType()).handle(request);
+            sensorEventHandlers.get(request.getType()).process(request);
         } else {
             throw new IllegalArgumentException("Не удалось обнаружить обработчик для датчика " + request.getType());
         }
@@ -48,7 +48,7 @@ public class CollectController {
     public void collectHubEvent(@Valid @RequestBody HubEvent request) {
         log.info("Получен запрос на обработку события хаба {}", request);
         if (hubEventHandlers.containsKey(request.getType())) {
-            hubEventHandlers.get(request.getType()).handle(request);
+            hubEventHandlers.get(request.getType()).process(request);
         } else {
             throw new IllegalArgumentException("Не удалось обнаружить обработчик для хаба " + request.getType());
         }
