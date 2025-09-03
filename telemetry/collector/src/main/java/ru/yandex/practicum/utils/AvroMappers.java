@@ -1,13 +1,13 @@
 package ru.yandex.practicum.utils;
 
+import ru.yandex.practicum.grpc.telemetry.event.DeviceActionProto;
+import ru.yandex.practicum.grpc.telemetry.event.ScenarioConditionProto;
 import ru.yandex.practicum.kafka.telemetry.event.*;
-import ru.yandex.practicum.model.hub.DeviceAction;
-import ru.yandex.practicum.model.hub.ScenarioCondition;
 
 import java.util.List;
 
 public class AvroMappers {
-    public static List<DeviceActionAvro> toDeviceActionAvro(List<DeviceAction> actions) {
+    public static List<DeviceActionAvro> toDeviceActionAvro(List<DeviceActionProto> actions) {
         return actions.stream()
                 .map(action -> DeviceActionAvro.newBuilder()
                         .setSensorId(action.getSensorId())
@@ -17,13 +17,13 @@ public class AvroMappers {
                 .toList();
     }
 
-    public static List<ScenarioConditionAvro> toScenarioConditionAvro(List<ScenarioCondition> conditions) {
+    public static List<ScenarioConditionAvro> toScenarioConditionAvro(List<ScenarioConditionProto> conditions) {
         return conditions.stream()
                 .map(condition -> ScenarioConditionAvro.newBuilder()
                         .setSensorId(condition.getSensorId())
                         .setType(ConditionTypeAvro.valueOf(condition.getType().name()))
                         .setOperation(ConditionOperationAvro.valueOf(condition.getOperation().name()))
-                        .setValue(condition.getValue())
+                        .setValue(condition.getBoolValue())
                         .build())
                 .toList();
     }
