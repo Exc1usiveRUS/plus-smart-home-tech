@@ -5,14 +5,12 @@ import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.grpc.telemetry.collector.CollectorControllerGrpc;
 import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
 import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.service.handler.hub.HubEventHandler;
 import ru.yandex.practicum.service.handler.sensor.SensorEventHandler;
+import net.devh.boot.grpc.server.service.*;
 
 import java.util.List;
 import java.util.Map;
@@ -20,9 +18,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
-@RestController
-@RequestMapping("/events")
-@Validated
+@GrpcService
 public class CollectController
         extends CollectorControllerGrpc.CollectorControllerImplBase {
     private final Map<SensorEventProto.PayloadCase, SensorEventHandler> sensorEventHandlers;
