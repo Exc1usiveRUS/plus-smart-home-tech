@@ -16,7 +16,7 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public abstract class BaseSensorEventHandler<T extends SpecificRecordBase> implements SensorEventHandler {
     protected final KafkaClient kafkaClient;
-    @Value("${kafka.topics.sensor-events}")
+    @Value("${kafka.topics.sensors-events}")
     private String SENSOR_EVENT_TOPIC;
 
     protected abstract T mapToAvro(SensorEventProto sensorEvent);

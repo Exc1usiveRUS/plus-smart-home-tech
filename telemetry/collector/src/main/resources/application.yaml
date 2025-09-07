@@ -1,13 +1,14 @@
 kafka:
   producer:
     properties:
-      bootstrap.servers: "localhost:9092"
+      bootstrap.servers: localhost:9092
       key.serializer: org.apache.kafka.common.serialization.StringSerializer
-      value.serializer: ru.yandex.practicum.kafka_client.AvroSerializer
+      value.serializer: serializer.AvroSerializer
   topics:
-    sensor-events: telemetry.sensors.v1
-    hub-events: telemetry.hubs.v1
+    sensors-events: telemetry.sensors.v1
+    hubs-events: telemetry.hubs.v1
+    snapshots-events: telemetry.snapshots.v1
 
 grpc:
   server:
-    port:9090
+    port: 9090

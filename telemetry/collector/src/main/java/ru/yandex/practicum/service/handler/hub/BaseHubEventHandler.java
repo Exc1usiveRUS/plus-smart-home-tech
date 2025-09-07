@@ -16,7 +16,7 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public abstract class BaseHubEventHandler<T extends SpecificRecordBase> implements HubEventHandler {
     protected final KafkaClient kafkaClient;
-    @Value("${kafka.topics.hub-events}")
+    @Value("${kafka.topics.hubs-events}")
     private String HUB_EVENT_TOPIC;
 
     protected abstract T mapToAvro(HubEventProto hubEvent);
