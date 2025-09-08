@@ -24,11 +24,11 @@ public class BaseAvroDeserializer<T extends SpecificRecordBase> implements Deser
     @Override
     public T deserialize(String topic, byte[] data) {
         try {
-            if (data != null) {
-                BinaryDecoder decoder = decoderFactory.binaryDecoder(data, null);
-                return reader.read(null, decoder);
+            if (data == null) {
+                throw new RuntimeException("Данные для топика [" + topic + "] отсутствуют");
             }
-            return null;
+            BinaryDecoder decoder = decoderFactory.binaryDecoder(data, null);
+            return reader.read(null, decoder);
         } catch (Exception e) {
             throw new RuntimeException("Ошибка десериализации данных из топика [" + topic + "]", e);
         }

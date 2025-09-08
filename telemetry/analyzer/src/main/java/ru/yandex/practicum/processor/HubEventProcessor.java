@@ -63,12 +63,11 @@ public class HubEventProcessor implements Runnable {
     private void handleRecord(HubEventAvro hubEvent) {
         log.info("Обработка события от хаба: {}", hubEvent);
         String eventType = hubEvent.getPayload().getClass().getName();
-        if (handlerMap.containsKey(eventType)) {
-            HubEventHandler handler = handlerMap.get(eventType);
-            log.info("Используем обработчик: {}", handler);
-            handler.handle(hubEvent);
-        } else {
+        if (!handlerMap.containsKey(eventType)) {
             throw new IllegalArgumentException("Не найден обработчик для данного сценария");
         }
+        HubEventHandler handler = handlerMap.get(eventType);
+        log.info("Используем обработчик: {}", handler);
+        handler.handle(hubEvent);
     }
 }

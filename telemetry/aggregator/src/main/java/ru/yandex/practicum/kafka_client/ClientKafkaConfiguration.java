@@ -35,9 +35,7 @@ public class ClientKafkaConfiguration {
 
             @Override
             public Producer<String, SpecificRecordBase> getProducer() {
-                if (producer == null) {
-                    initProducer(kafkaProducerConfiguration);
-                }
+                initProducer(kafkaProducerConfiguration);
                 return producer;
             }
 
