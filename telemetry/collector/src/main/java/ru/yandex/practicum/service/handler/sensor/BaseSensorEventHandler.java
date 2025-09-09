@@ -6,23 +6,25 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Value;
+import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.kafka_client.KafkaClient;
-import ru.yandex.practicum.model.sensor.SensorEvent;
+
+import java.time.Instant;
 
 @Slf4j
 @RequiredArgsConstructor
 public abstract class BaseSensorEventHandler<T extends SpecificRecordBase> implements SensorEventHandler {
     protected final KafkaClient kafkaClient;
-    @Value("${kafka.topics.sensor-events}")
+    @Value("${kafka.topics.sensors-events}")
     private String SENSOR_EVENT_TOPIC;
 
-    protected abstract T mapToAvro(SensorEvent sensorEvent);
+    protected abstract T mapToAvro(SensorEventProto sensorEvent);
 
     @Override
-    public void process(SensorEvent sensorEvent) {
-        if(!sensorEvent.getType().equals(getMessageType())) {
-            throw new IllegalArgumentException("Неизвестный тип события сенсора: " + sensorEvent.getType());
+    public void process(SensorEventProto sensorEvent) {
+        if(!sensorEvent.getPayloadCase().equals(getMessageType())) {
+            throw new IllegalArgumentException("Неизвестный тип события сенсора: " + sensorEvent.getPayloadCase());
         }
 
         T payload = mapToAvro(sensorEvent);
@@ -30,7 +32,8 @@ public abstract class BaseSensorEventHandler<T extends SpecificRecordBase> imple
         SensorEventAvro eventAvro = SensorEventAvro.newBuilder()
                 .setHubId(sensorEvent.getHubId())
                 .setId(sensorEvent.getId())
-                .setTimestamp(sensorEvent.getTimestamp())
+                .setTimestamp(Instant.ofEpochSecond(sensorEvent.getTimestamp().getSeconds(),
+                        sensorEvent.getTimestamp().getNanos()))
                 .setPayload(payload)
                 .build();
 

@@ -6,30 +6,33 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Value;
+import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.kafka_client.KafkaClient;
-import ru.yandex.practicum.model.hub.HubEvent;
+
+import java.time.Instant;
 
 @Slf4j
 @RequiredArgsConstructor
 public abstract class BaseHubEventHandler<T extends SpecificRecordBase> implements HubEventHandler {
     protected final KafkaClient kafkaClient;
-    @Value("${kafka.topics.hub-events}")
+    @Value("${kafka.topics.hubs-events}")
     private String HUB_EVENT_TOPIC;
 
-    protected abstract T mapToAvro(HubEvent hubEvent);
+    protected abstract T mapToAvro(HubEventProto hubEvent);
 
     @Override
-    public void process(HubEvent hubEvent) {
-        if(!hubEvent.getType().equals(getMessageType())) {
-            throw new IllegalArgumentException("Неизвестный тип события хаба: " + hubEvent.getType());
+    public void process(HubEventProto hubEvent) {
+        if(!hubEvent.getPayloadCase().equals(getMessageType())) {
+            throw new IllegalArgumentException("Неизвестный тип события хаба: " + hubEvent.getPayloadCase());
         }
 
         T payload = mapToAvro(hubEvent);
 
         HubEventAvro eventAvro = HubEventAvro.newBuilder()
                 .setHubId(hubEvent.getHubId())
-                .setTimestamp(hubEvent.getTimestamp())
+                .setTimestamp(Instant.ofEpochSecond(hubEvent.getTimestamp().getSeconds(),
+                        hubEvent.getTimestamp().getNanos()))
                 .setPayload(payload)
                 .build();
 
