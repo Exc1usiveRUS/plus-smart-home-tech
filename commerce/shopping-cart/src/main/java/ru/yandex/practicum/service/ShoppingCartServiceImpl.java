@@ -102,7 +102,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     private ShoppingCart getShoppingCart(String username) {
-        return shoppingCartRepository.findByUsernameAndState(username, ShoppingCartState.ACTIVE)
+        return shoppingCartRepository.findByUserNameAndState(username, ShoppingCartState.ACTIVE)
                 .orElseGet(
                         () -> {
                             ShoppingCart newShoppingCart = new ShoppingCart();
