@@ -14,7 +14,6 @@ import ru.yandex.practicum.model.*;
 import ru.yandex.practicum.repository.WarehouseRepository;
 import ru.yandex.practicum.request.AddProductToWarehouseRequest;
 import ru.yandex.practicum.request.NewProductInWarehouseRequest;
-import ru.yandex.practicum.request.SetProductQuantityStateRequest;
 
 import java.security.SecureRandom;
 import java.util.Map;
@@ -135,7 +134,7 @@ public class WarehouseServiceImpl implements WarehouseService {
             quantityState = QuantityState.MANY;
         }
         try {
-            shoppingStoreClient.setProductState(new SetProductQuantityStateRequest(product.getProductId(), quantityState));
+            shoppingStoreClient.setProductState(product.getProductId(), quantityState.name());
         } catch (FeignException e) {
             log.error("Процесс изменения состояния продукта в магазине завершен с ошибкой: {}", e.getMessage());
         }

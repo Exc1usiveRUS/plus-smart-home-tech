@@ -2,8 +2,8 @@ package ru.yandex.practicum.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.exception.ProductNotFoundException;
 import ru.yandex.practicum.mapper.ProductMapper;
@@ -11,8 +11,6 @@ import ru.yandex.practicum.model.*;
 import ru.yandex.practicum.repository.ShoppingStoreRepository;
 import ru.yandex.practicum.request.SetProductQuantityStateRequest;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -65,38 +63,17 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
     }
 
     @Override
-    public List<ProductDto> getProducts(String category, Pageable pageable) {
+    public Page<ProductDto> getProducts(String category, Pageable pageable) {
         log.info("Процесс получения продуктов по категории: {}", category);
-        Sort sort = createSort(pageable.getSort());
-        PageRequest pageRequest = PageRequest.of(
-                pageable.getPage(),
-                pageable.getSize(),
-                sort
-        );
-        List<Product> products = repository.findByProductCategory(ProductCategory.valueOf(category), pageRequest);
+        Page<ProductDto> products = repository.findAllByProductCategory(ProductCategory.valueOf(category), pageable)
+                .map(ProductMapper::toProductDto);
         log.info("Получено продуктов по категории: {}", products);
-        return ProductMapper.toProductDtoList(products);
+        return products;
     }
 
     private Product findProduct(UUID productId) {
         return repository.findById(productId).orElseThrow(
                 () -> new ProductNotFoundException("Продукт с id " + productId + " не найден")
         );
-    }
-
-    private Sort createSort(List<String> sortFields) {
-        if (sortFields == null || sortFields.isEmpty()) {
-            return Sort.unsorted();
-        }
-
-        List<Sort.Order> orders = new ArrayList<>();
-        for (String field : sortFields) {
-            if (field.startsWith("-")) {
-                orders.add(Sort.Order.desc(field.substring(1)));
-            } else {
-                orders.add(Sort.Order.asc(field));
-            }
-        }
-        return Sort.by(orders);
     }
 }
