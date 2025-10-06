@@ -22,25 +22,28 @@ public class ShoppingCartController implements ShoppingCartOperation {
     @Override
     public ShoppingCartDto getShoppingCarts(String username) {
         log.info("Поступил запрос на получение корзин пользователя: {}", username);
-        return shoppingCartService.getShoppingCarts(username);
+        return shoppingCartService.getCarts(username);
     }
 
     @Override
     public ShoppingCartDto addProductToShoppingCart(String username, @RequestBody Map<UUID, Integer> products) {
+        if (products == null || products.isEmpty()) {
+            throw new IllegalArgumentException("Список добавляемых продуктов не может быть пустым");
+        }
         log.info("Поступил запрос на добавление продуктов в корзину: {}", products);
-        return shoppingCartService.addProductToShoppingCart(username, products);
+        return shoppingCartService.addProductToCart(username, products);
     }
 
     @Override
     public void deactivateShoppingCart(String username) {
         log.info("Поступил запрос на деактивацию корзины пользователя: {}", username);
-        shoppingCartService.deactivateShoppingCart(username);
+        shoppingCartService.deactivateCart(username);
     }
 
     @Override
     public ShoppingCartDto removeProductFromShoppingCart(String username, @RequestBody List<UUID> productIds) {
         log.info("Поступил запрос на удаление продуктов из корзины: {}", productIds);
-        return shoppingCartService.removeProductFromShoppingCart(username, productIds);
+        return shoppingCartService.removeProductFromCart(username, productIds);
     }
 
     @Override

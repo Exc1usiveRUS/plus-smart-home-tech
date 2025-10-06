@@ -26,7 +26,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final WarehouseClient warehouseClient;
 
     @Override
-    public ShoppingCartDto getShoppingCarts(String username) {
+    @Transactional(readOnly = true)
+    public ShoppingCartDto getCarts(String username) {
         log.info("Процесс получения корзины пользователя: {}", username);
         checkUser(username);
         ShoppingCart cart = getShoppingCart(username);
@@ -36,10 +37,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     @Transactional
-    public ShoppingCartDto addProductToShoppingCart(String username, Map<UUID, Integer> products) {
-        if (products == null || products.isEmpty()) {
-            throw new IllegalArgumentException("Список добавляемых продуктов не может быть пустым");
-        }
+    public ShoppingCartDto addProductToCart(String username, Map<UUID, Integer> products) {
         log.info("Процесс добавления продуктов в корзину: {}", products);
         checkUser(username);
         log.info("Пользователь найден: {}", username);
@@ -57,7 +55,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void deactivateShoppingCart(String username) {
+    @Transactional
+    public void deactivateCart(String username) {
         log.info("Процесс деактивации корзины пользователя: {}", username);
         checkUser(username);
         ShoppingCart cart = getShoppingCart(username);
@@ -67,7 +66,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCartDto removeProductFromShoppingCart(String username, List<UUID> productIds) {
+    @Transactional
+    public ShoppingCartDto removeProductFromCart(String username, List<UUID> productIds) {
         log.info("Процесс удаления продуктов из корзины: {}", productIds);
         checkUser(username);
         ShoppingCart cart = getShoppingCart(username);

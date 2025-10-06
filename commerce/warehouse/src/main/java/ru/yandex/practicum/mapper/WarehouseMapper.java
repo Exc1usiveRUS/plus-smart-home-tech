@@ -1,10 +1,10 @@
 package ru.yandex.practicum.mapper;
 
 import ru.yandex.practicum.model.WarehouseProduct;
-import ru.yandex.practicum.request.NewProductInWarehouseRequest;
+import ru.yandex.practicum.request.NewProductWarehouseRequest;
 
 public class WarehouseMapper {
-    public static WarehouseProduct toWarehouseProduct(NewProductInWarehouseRequest request) {
+    public static WarehouseProduct toWarehouseProduct(NewProductWarehouseRequest request) {
         WarehouseProduct product = new WarehouseProduct();
         product.setProductId(request.getProductId());
         product.setFragile(request.getFragile());

@@ -8,13 +8,13 @@ import java.util.Map;
 import java.util.UUID;
 
 public interface ShoppingCartService {
-    ShoppingCartDto getShoppingCarts(String username);
+    ShoppingCartDto getCarts(String username);
 
-    ShoppingCartDto addProductToShoppingCart(String username, Map<UUID, Integer> products);
+    ShoppingCartDto addProductToCart(String username, Map<UUID, Integer> products);
 
-    void deactivateShoppingCart(String username);
+    void deactivateCart(String username);
 
-    ShoppingCartDto removeProductFromShoppingCart(String username, List<UUID> productIds);
+    ShoppingCartDto removeProductFromCart(String username, List<UUID> productIds);
 
     ShoppingCartDto changeProductQuantity(String username, ChangeProductQuantityRequest request);
 }

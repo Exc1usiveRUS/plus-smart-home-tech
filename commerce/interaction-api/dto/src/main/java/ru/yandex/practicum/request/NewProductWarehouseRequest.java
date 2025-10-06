@@ -12,7 +12,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NewProductInWarehouseRequest {
+public class NewProductWarehouseRequest {
     @NotNull
     private UUID productId;
 

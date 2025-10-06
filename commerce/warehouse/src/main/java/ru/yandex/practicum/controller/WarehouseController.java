@@ -8,7 +8,7 @@ import ru.yandex.practicum.model.AddressDto;
 import ru.yandex.practicum.model.BookedProductsDto;
 import ru.yandex.practicum.model.ShoppingCartDto;
 import ru.yandex.practicum.request.AddProductToWarehouseRequest;
-import ru.yandex.practicum.request.NewProductInWarehouseRequest;
+import ru.yandex.practicum.request.NewProductWarehouseRequest;
 import ru.yandex.practicum.service.WarehouseService;
 
 @Slf4j
@@ -18,7 +18,7 @@ public class WarehouseController implements WarehouseOperations {
     private final WarehouseService warehouseService;
 
     @Override
-    public void addProduct(NewProductInWarehouseRequest request) {
+    public void addProduct(NewProductWarehouseRequest request) {
         log.info("Поступил запрос на добавление продукта в склад: {}", request);
         warehouseService.addProduct(request);
     }

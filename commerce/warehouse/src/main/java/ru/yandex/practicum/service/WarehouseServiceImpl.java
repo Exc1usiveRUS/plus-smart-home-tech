@@ -13,7 +13,7 @@ import ru.yandex.practicum.mapper.WarehouseMapper;
 import ru.yandex.practicum.model.*;
 import ru.yandex.practicum.repository.WarehouseRepository;
 import ru.yandex.practicum.request.AddProductToWarehouseRequest;
-import ru.yandex.practicum.request.NewProductInWarehouseRequest;
+import ru.yandex.practicum.request.NewProductWarehouseRequest;
 
 import java.security.SecureRandom;
 import java.util.Map;
@@ -44,7 +44,7 @@ public class WarehouseServiceImpl implements WarehouseService {
             ADDRESSES[Random.from(new SecureRandom()).nextInt(0, 1)];
 
     @Override
-    public void addProduct(NewProductInWarehouseRequest request) {
+    public void addProduct(NewProductWarehouseRequest request) {
         log.info("Процесс добавления продукта в склад: {}", request);
         checkProductInWarehouse(request.getProductId());
         WarehouseProduct product = WarehouseMapper.toWarehouseProduct(request);

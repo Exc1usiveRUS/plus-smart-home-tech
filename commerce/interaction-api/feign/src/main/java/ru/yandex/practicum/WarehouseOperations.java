@@ -9,11 +9,11 @@ import ru.yandex.practicum.model.AddressDto;
 import ru.yandex.practicum.model.BookedProductsDto;
 import ru.yandex.practicum.model.ShoppingCartDto;
 import ru.yandex.practicum.request.AddProductToWarehouseRequest;
-import ru.yandex.practicum.request.NewProductInWarehouseRequest;
+import ru.yandex.practicum.request.NewProductWarehouseRequest;
 
 public interface WarehouseOperations {
     @PutMapping("/api/v1/warehouse")
-    void addProduct(@RequestBody @Valid NewProductInWarehouseRequest request);
+    void addProduct(@RequestBody @Valid NewProductWarehouseRequest request);
 
     @PostMapping("/api/v1/warehouse/check")
     BookedProductsDto checkProduct(@RequestBody ShoppingCartDto cart);

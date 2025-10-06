@@ -1,19 +1,17 @@
 package ru.yandex.practicum.exception;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-@Setter
 public class ApiError {
-    private Throwable cause;
-    private StackTraceElement[] stackTrace;
-    private HttpStatus httpStatus;
-    private String userMessage;
-    private String message;
-    private Throwable[] suppressed;
-    private String localizedMessage;
+    private final Throwable cause;
+    private final StackTraceElement[] stackTrace;
+    private final HttpStatus httpStatus;
+    private final String userMessage;
+    private final String message;
+    private final Throwable[] suppressed;
+    private final String localizedMessage;
 
     public ApiError(HttpStatus httpStatus, Exception e, String userMessage) {
         this.cause = e.getCause();
