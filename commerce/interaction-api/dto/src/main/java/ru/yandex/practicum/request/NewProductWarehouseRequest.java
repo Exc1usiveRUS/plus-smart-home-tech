@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.yandex.practicum.model.DimensionDto;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -23,6 +24,6 @@ public class NewProductWarehouseRequest {
 
     @NotNull
     @DecimalMin(value = "1")
-    private Double weight;
+    private BigDecimal weight;
 
 }
