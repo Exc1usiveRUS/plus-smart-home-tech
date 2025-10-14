@@ -31,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
     private final PaymentClient paymentClient;
 
     @Override
+    @Transactional(readOnly = true)
     public List<OrderDto> getOrdersUser(String username) {
         validUser(username);
         List<Order> orders = orderRepository.findByUsername(username);
@@ -72,6 +73,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto paymentOrder(UUID orderId) {
         Order order = getOrder(orderId);
         order.setState(OrderState.PAID);
@@ -81,6 +83,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto failedPaymentOrder(UUID orderId) {
         Order order = getOrder(orderId);
         order.setState(OrderState.PAYMENT_FAILED);
@@ -90,6 +93,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto deliveryOrder(UUID orderId) {
         Order order = getOrder(orderId);
         order.setState(OrderState.DELIVERED);
@@ -99,6 +103,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto deliveryOrderFailed(UUID orderId) {
         Order order = getOrder(orderId);
         order.setState(OrderState.DELIVERY_FAILED);
@@ -108,6 +113,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto completeOrder(UUID orderId) {
         Order order = getOrder(orderId);
         order.setState(OrderState.COMPLETED);
@@ -155,6 +161,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto assemblyFailed(UUID orderId) {
         Order order = getOrder(orderId);
         order.setState(OrderState.ASSEMBLY_FAILED);

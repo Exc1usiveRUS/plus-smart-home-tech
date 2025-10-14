@@ -13,9 +13,7 @@ import ru.yandex.practicum.model.*;
 import ru.yandex.practicum.repository.PaymentRepository;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -40,16 +38,14 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     @Transactional
     public BigDecimal totalCost(OrderDto order) {
-        List<BigDecimal> prices = new ArrayList<>();
-        Map<UUID, Integer> orderProducts = order.getProducts();
+        BigDecimal totalCost = order.getProducts().entrySet().stream()
+                .map(entry ->
+                        shoppingStoreClient.getProductById(entry.getKey())
+                                .getPrice()
+                                .multiply(BigDecimal.valueOf(entry.getValue()))
+                )
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        orderProducts.forEach((id, quantity) -> {
-            ProductDto productDto = shoppingStoreClient.getProductById(id);
-            BigDecimal totalPrice = productDto.getPrice().multiply(BigDecimal.valueOf(quantity));
-            prices.add(totalPrice);
-        });
-
-        BigDecimal totalCost = prices.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
         log.info("Общая стоимость заказа: {}", totalCost);
         return totalCost;
     }

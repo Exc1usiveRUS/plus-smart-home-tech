@@ -32,6 +32,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     private static final BigDecimal STREET_MULTIPLIER = BigDecimal.valueOf(0.2);
 
     @Override
+    @Transactional
     public DeliveryDto planDelivery(DeliveryDto deliveryDto) {
         Delivery delivery = DeliveryMapper.toDelivery(deliveryDto);
         delivery = deliveryRepository.save(delivery);
